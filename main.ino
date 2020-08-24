@@ -47,7 +47,6 @@ void check_available_client() {
   client = server.available();
 }
 
-// Pause in ms, limit as of RGB each color * 4
 void dimming( int *rgb ) {
   int rgb_step[ 3 ];  
   rgb_step[ 0 ] = rgb[ 3 ] - rgb[ 0 ];
@@ -55,28 +54,37 @@ void dimming( int *rgb ) {
   rgb_step[ 2 ] = rgb[ 5 ] - rgb[ 2 ];
 
   int rgb_new[ 3 ] = { rgb[ 0 ], rgb[ 1 ], rgb[ 2 ] };
-  int lowest = min( min( abs( rgb_step[ 0 ] ), abs( rgb_step[ 1 ] ) ), abs( rgb_step[ 2 ] ) );
+  int highest = max( max( abs( rgb_step[ 0 ] ), abs( rgb_step[ 1 ] ) ), abs( rgb_step[ 2 ] ) );
+  bool state[ 3 ];
   
   for ( int i = 0; i < 3; ++i ) {
-    rgb_step[ i ] /= lowest;
+    state[ i ]    = rgb_step[ 0 ] > 0;
+    rgb_step[ i ] = rgb_step[ i ] == 0 ? 255 : ( round( float( highest ) / abs( rgb_step[ i ] ) ) );
   }
-
-  int count = lowest;
-  while ( count-- > 0 && !client ) {
-    rgb_new[ 0 ] += rgb_step[ 0 ];
-    rgb_new[ 1 ] += rgb_step[ 1 ];
-    rgb_new[ 2 ] += rgb_step[ 2 ];
+  
+  int count = 1;
+  bool change = false;
+  while ( !client ) {
+    for ( int i = 0; i < 3; ++i ) {
+      if ( count % rgb_step[ i ] == 0 ) {
+        if ( !change )
+          rgb_new[ i ] += state[ i ] ? 1 : -1;
+        else
+          rgb_new[ i ] += state[ i ] ? -1 : 1;
+      }
+    }
     set_led( rgb_new[ 0 ], rgb_new[ 1 ], rgb_new[ 2 ] );
+    
     delay( rgb[ 7 ] );
-    check_available_client();
-  }
+    
+    if ( count > highest && change )
+      break;
+    else if ( count > highest ) {
+      change = true; count = 1;
+    } 
+    else
+      ++count;
 
-  while ( count++ < lowest && !client ) {
-    rgb_new[ 0 ] -= rgb_step[ 0 ];
-    rgb_new[ 1 ] -= rgb_step[ 1 ];
-    rgb_new[ 2 ] -= rgb_step[ 2 ];
-    set_led( rgb_new[ 0 ], rgb_new[ 1 ], rgb_new[ 2 ] );
-    delay( rgb[ 7 ] );
     check_available_client();
   }
 }
