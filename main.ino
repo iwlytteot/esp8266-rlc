@@ -31,7 +31,7 @@ void setup() {
     analogWrite( RED, 0 );
   } while ( wl_status != WL_CONNECTED );
   
-  server.begin(); // Now this device is available on 192.168.1.51:5432 for TCP connection
+  server.begin(); // Now this device is available on 192.168.1.200:5432 for TCP connection
   analogWrite( RED, 700 );
 }
 
