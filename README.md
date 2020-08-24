@@ -21,6 +21,8 @@ Simple and intuitive RGB LED device, controlled via smartphone app using WiFi.
   <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/20200824_234753.jpg" width="210">
   <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/Screenshot_20200824-235340.jpg" width="200">
 </p>
+
+### LED modes
 - steady mode for constant RGB value
 - blink mode to apply transition from one RGB value to the other RGB value
 
