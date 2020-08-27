@@ -124,7 +124,7 @@ void parser( const String &line ) {
     if ( c == '.' ) {
       rgb[ count ] = part.toInt();
       if ( count < 6 )
-        rgb[ count ] *= 4; // only for ESP8266
+        rgb[ count ] *= 4; // only for ESP8266 (consider using analogWriteResolution() instead)
       ++count;
       part = "";
     } else {
