@@ -23,7 +23,6 @@ Simple and intuitive RGB LED device, controlled via smartphone app using WiFi.
   <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/20200827_202223.jpg" width="200">
 </p>
 
-### LED modes
 #### Static mode
 - keep the same color or just dim it
 #### Dynamic mode
