@@ -51,6 +51,7 @@ void check_available_client() {
 }
 
 void dimming( int *rgb ) {
+  /** Distance between RGB values **/
   int rgb_step[ 3 ];  
   rgb_step[ 0 ] = rgb[ 3 ] - rgb[ 0 ];
   rgb_step[ 1 ] = rgb[ 4 ] - rgb[ 1 ];
@@ -58,15 +59,19 @@ void dimming( int *rgb ) {
 
   int rgb_new[ 3 ] = { rgb[ 0 ], rgb[ 1 ], rgb[ 2 ] };
   int highest = max( max( abs( rgb_step[ 0 ] ), abs( rgb_step[ 1 ] ) ), abs( rgb_step[ 2 ] ) );
-  bool state[ 3 ];
+  bool state[ 3 ];          // Adding or subtracting
+  int rgb_correction[ 3 ];  // rounds per pixel drop rate
 
-  int rgb_correction[ 3 ];
+  /** Compute rounds per pixel, then fix this inaccuracy (as long as we use fractions) with rounds per pixel drop rate **/
   for ( int i = 0; i < 3; ++i ) {
     state[ i ] = rgb_step[ i ] < 0;
+    /** There is no change in RGB value, hence we outvalue the step & correction **/
     if ( rgb_step[ i ] == 0 ) {
       rgb_correction[ i ] = 1025;
       rgb_step[ i ] = 1025;
     }
+    /** What follows below is simple arithmetic, 
+     ** from floating number we use integer and fractional part to decide pixel (drop)rate **/ 
     else {
       int r_step = 10 * double( highest ) / abs( rgb_step[ i ] );
       if ( r_step == 10 ) {
@@ -79,18 +84,17 @@ void dimming( int *rgb ) {
       }
     }
   }
-  
-  
 
   int rgb_count[ 3 ] = { 0 };
   int count = 1;
   bool change = false;
+ 
   while ( !client ) {
     for ( int i = 0; i < 3; ++i ) {
       if ( count % rgb_step[ i ] == 0 ) {
-        if ( ++rgb_count[ i ] % rgb_correction[ i ] == 0 )
+        if ( ++rgb_count[ i ] % rgb_correction[ i ] == 0 )  //drop rate
           continue;
-        if ( change )
+        if ( change ) //bidirectional transition
           rgb_new[ i ] += state[ i ] ? 1 : -1;
         else
           rgb_new[ i ] += state[ i ] ? -1 : 1;
@@ -103,14 +107,6 @@ void dimming( int *rgb ) {
     if ( count >= highest && change )
       break;
     else if ( count >= highest ) {
-      Serial.print( "From ");
-      Serial.print( rgb[ 1 ] );
-      Serial.print( " to ");
-      Serial.print( rgb_new[ 1 ] );
-      Serial.print( " of highest: " );
-      Serial.print( highest );
-      Serial.print( " state: " );
-      Serial.println( state[ 1 ] );
       change = true; count = 1;
     } 
     else
@@ -120,7 +116,7 @@ void dimming( int *rgb ) {
   }
 }
 
-void handle_message( const String &line ) {
+void parser( const String &line ) {
   String part = "";
   byte count = 0;
   int rgb[8] = { 0 }; // | start: R G B (0, 1, 2 indexes), end: R G B (3, 4, 5 indexes), mode (6), speed (7) |
@@ -128,7 +124,7 @@ void handle_message( const String &line ) {
     if ( c == '.' ) {
       rgb[ count ] = part.toInt();
       if ( count < 6 )
-        rgb[ count ] *= 4;
+        rgb[ count ] *= 4; // only for ESP8266
       ++count;
       part = "";
     } else {
@@ -145,6 +141,6 @@ void loop() {
   if ( client.connected() ) {
     String line = client.readStringUntil('\n');
     client.stop();
-    handle_message( line );
+    parser( line );
   } 
 }
