@@ -18,13 +18,16 @@ Simple and intuitive RGB LED device, controlled via smartphone app using WiFi.
 
 ## Android app
 <p align="left">
-  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/20200824_234753.jpg" width="210">
-  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/Screenshot_20200824-235340.jpg" width="200">
+  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/20200827_202146.jpg" width="210">
+  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/Screenshot_20200827-202432.jpg" width="200">
+  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/20200827_202223.jpg" width="200">
 </p>
 
 ### LED modes
-- steady mode for constant RGB value
-- blink mode to apply transition from one RGB value to the other RGB value
+#### Static mode
+- keep the same color or just dim it
+#### Dynamic mode
+- apply transition from one RGB value to the other RGB value
 
 ## Technical background
 - this project is for ESP8266 mainly. For other boards, remove multiplier by 4 of RGB value. (This is due to the fact that ESP8266 uses 10-bit pin for PWM insted of 8-bit in other boards)
