@@ -29,7 +29,7 @@ Simple and intuitive RGB LED device, controlled via smartphone app using WiFi.
 - apply transition from one RGB value to the other RGB value
 
 ## Technical background
-- this project is for ESP8266 mainly. For other boards, remove multiplier by 4 of RGB value. (This is due to the fact that ESP8266 uses 10-bit pin for PWM insted of 8-bit in other boards)
+- this project is for Wemos D1 mini mainly. For other boards, remove multiplier by 4 of RGB value. (This is due to the fact that Wemos D1 mini uses 10-bit pin for PWM insted of 8-bit in other boards)
 - choose <b>correct</b> transistor to withstand power load from your LED strip
 - resistor value <b>depends</b> on transistor and your board
 
