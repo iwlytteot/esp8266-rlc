@@ -2,8 +2,7 @@
 Simple and intuitive RGB LED device, controlled via smartphone app using WiFi.
 
 ## Requirements
-- ESP8266 microchip with available PWM pins
-- smartphone
+- Wemos D1 mini (pretty much anything with ESP8266 and available PWM pins will work)
 - RGB LED strip
 - 3x resistor    
 - 3x NPN transistor 
@@ -14,7 +13,8 @@ Simple and intuitive RGB LED device, controlled via smartphone app using WiFi.
   <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/circuit.png" width="430" alt="accessibility text">
 </p>
 
-- 24V input to LED strip & DC-DC supply
+- 24V input to LED strip & USB 5V to Wemos D1 mini
+- (optional) as shown in schematic, using single 24V supply for both LED strip & Wemos D1 mini via DC-DC step down
 
 ## Android app
 <p align="left">
