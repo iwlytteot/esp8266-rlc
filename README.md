@@ -2,7 +2,7 @@
 Simple and intuitive RGB LED device, controlled via smartphone app using WiFi.
 
 ## Requirements
-- Wemos D1 mini (pretty much anything with ESP8266 and available PWM pins will work)
+- Wemos D1 mini (pretty much anything with ESP8266 and available PWM pins works)
 - RGB LED strip
 - 3x resistor    
 - 3x NPN transistor 
