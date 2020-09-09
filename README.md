@@ -7,14 +7,14 @@ Simple and intuitive RGB LED device, controlled via smartphone app using WiFi.
 - RGB LED strip
 - 3x resistor    
 - 3x NPN transistor 
+- (optional) DC-DC step down supply LM2596, 24V to 5V
 
 ## Setting up circuit
 <p align="left">
-  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/vbbrgbled.PNG" width="430" alt="accessibility text">
+  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/circuit.png" width="430" alt="accessibility text">
 </p>
 
-- 24V input to LED strip 
-- 5V Arduino board voltage
+- 24V input to LED strip & DC-DC supply
 
 ## Android app
 <p align="left">
