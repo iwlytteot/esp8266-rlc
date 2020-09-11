@@ -11,14 +11,7 @@ int wl_status = WL_DISCONNECTED;
 WiFiServer server( 5432 );
 WiFiClient client;
 
-void setup() { 
-
-  Serial.begin( 115200 );
-  pinMode( RED, OUTPUT );
-  pinMode( GREEN, OUTPUT );
-  pinMode( BLUE, OUTPUT );
-
-  
+void wifi_setup() {
   IPAddress staticIP(192, 168, 1, 51);
   IPAddress subnet(255, 255, 255, 0);
   IPAddress gateway(192, 168, 1, 1);
@@ -34,14 +27,31 @@ void setup() {
   } while ( wl_status != WL_CONNECTED );
   
   server.begin(); // Now this device is available on 192.168.1.51:5432 for TCP connection
-  analogWrite( RED, 700 );
-  
+  analogWrite( GREEN, 700 );
 }
 
+void setup() { 
+  Serial.begin( 115200 );
+  pinMode( RED, OUTPUT );
+  pinMode( GREEN, OUTPUT );
+  pinMode( BLUE, OUTPUT );
+  
+  wifi_setup(); 
+}
+
+/** Atomic setting LEDs **/
 void set_led( int red, int green, int blue ) {
   analogWrite( RED, red );
   analogWrite( GREEN, green );
   analogWrite( BLUE, blue );
+}
+
+/** Setting LEDs with intensity **/
+void set_led_intensity( int red, int green, int blue, int intensity = 100 ) {
+  double rate = intensity / 100.0;
+  analogWrite( RED, red * rate );
+  analogWrite( GREEN, green * rate );
+  analogWrite( BLUE, blue * rate );
 }
 
 void check_available_client() {
@@ -119,7 +129,7 @@ void dimming( int *rgb ) {
 void parser( const String &line ) {
   String part = "";
   byte count = 0;
-  int rgb[8] = { 0 }; // | start: R G B (0, 1, 2 indexes), end: R G B (3, 4, 5 indexes), mode (6), speed (7) |
+  int rgb[9] = { 0 }; // | start: R G B (0, 1, 2 indexes), end: R G B (3, 4, 5 indexes), mode (6), speed (7), intensity (8) |
   for ( char c : line ) {
     if ( c == '.' ) {
       rgb[ count ] = part.toInt();
@@ -131,12 +141,13 @@ void parser( const String &line ) {
       part += c;
     }  
   }
-  if ( rgb[ 6 ] == 0 ) { set_led( rgb[0], rgb[1], rgb[2] ); }
-  if ( rgb[ 6 ] == 1 ) { while ( !client ) dimming( rgb ); }
+  if ( rgb[ 6 ] == 0 ) { set_led_intensity( rgb[ 0 ], rgb[ 1 ], rgb[ 2 ], rgb[ 8 ] ); }
+  if ( rgb[ 6 ] == 1 ) { while ( !client && WiFi.status() == WL_CONNECTED ) dimming( rgb ); }
 }
 
 void loop() {
-  
+  if ( WiFi.status() != WL_CONNECTED )
+    wifi_setup();
   check_available_client();
   if ( client.connected() ) {
     String line = client.readStringUntil('\n');
