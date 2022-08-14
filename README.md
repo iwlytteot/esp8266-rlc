@@ -18,9 +18,9 @@ Simple and intuitive RGB LED device, controlled via smartphone app using WiFi.
 
 ## Android app
 <p align="left">
-  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/20200827_202146.jpg" width="210">
-  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/Screenshot_20200827-202432.jpg" width="200">
-  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/20200827_202223.jpg" width="200">
+  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/intro.jpg" width="210">
+  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/static.jpg" width="210">
+  <img src="https://github.com/iwlytteot/esp8266-rlc/blob/master/img/dynamic.jpg" width="207">
 </p>
 
 #### Static mode
